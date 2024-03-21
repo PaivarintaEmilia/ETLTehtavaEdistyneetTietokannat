@@ -2,6 +2,7 @@
 # Eli tarkotuksena on kai hakea dataa oltp-tietokannasta, jotta sitä voidaan lisätä olap tietokantaan
 from sqlalchemy import text
 
+import date_dim_filling_functions
 from db import get_db
 
 
@@ -103,8 +104,9 @@ def recipe_etl():
 
 
 def main():
-    user_etl() #
+    user_etl()
     recipe_etl()
+    date_dim_filling_functions.date_etl()
 
 
 if __name__ == '__main__':
