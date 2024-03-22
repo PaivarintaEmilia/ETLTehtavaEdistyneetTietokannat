@@ -3,6 +3,7 @@
 from sqlalchemy import text
 
 import date_dim_filling_functions
+import fact_etl
 from db import get_db
 
 
@@ -104,9 +105,16 @@ def recipe_etl():
 
 
 def main():
+    # recipe_fact-taulun tyhjennys, jos ajetaan ohjelma useaan kertaan
+    with get_db(cnx_type='olap') as _dw:
+        fact_etl._clear_recipe_fact(_dw)
+        fact_etl._clear_cooking_fact(_dw)
+    
     user_etl()
     recipe_etl()
     date_dim_filling_functions.date_etl()
+    fact_etl.recipe_fact_etl()
+    fact_etl.cooking_fact_etl()
 
 
 if __name__ == '__main__':
